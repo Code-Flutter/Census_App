@@ -1,4 +1,5 @@
 import 'package:cencus/home.dart';
+import 'package:cencus/navrbarpage.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -45,7 +46,7 @@ class Login extends StatelessWidget {
                     style: ElevatedButton.styleFrom(primary: Colors.white),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => HomeScreen()));
                     },
                     child: Text('Login',
                         style:
