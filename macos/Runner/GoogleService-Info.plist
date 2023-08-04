@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>766850064831-ffi51ea04a5t8l1pj9vnhknmnoji1v3g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.766850064831-ffi51ea04a5t8l1pj9vnhknmnoji1v3g</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCd_D3sa_78anH7OGi7M8RmwqYRyVUniMA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>766850064831</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.censusApp.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>census-app-6dabf</string>
+	<key>STORAGE_BUCKET</key>
+	<string>census-app-6dabf.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:766850064831:ios:6f4bf12697a2d207d6410a</string>
+</dict>
+</plist>
