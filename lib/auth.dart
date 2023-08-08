@@ -50,7 +50,6 @@ class AuthService {
 
   Future getUserUID() async {
     User? user = FirebaseAuth.instance.currentUser;
-    print(user?.uid);
     return user?.uid;
   }
 }
