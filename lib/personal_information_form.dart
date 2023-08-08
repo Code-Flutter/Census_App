@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
 
-class PersonalInformationForm extends StatefulWidget {
-  @override
-  _PersonalInformationFormState createState() =>
-      _PersonalInformationFormState();
+class PersonalInformation {
+  String firstName = '';
+  String givenName = '';
+  String lastName = '';
+  int day = 0;
+  int month = 0;
+  int year = 0;
+  String gender = '';
+  String maritalStatus = '';
+  String educationLevel = '';
+  String employmentStatus = '';
+  String occupation = '';
+  String citizenship = '';
+  String ninNumber = '';
+  String countryOfOrigin = '';
+  String ethnicity = '';
+  String languageSpoken = '';
+  String religion = '';
+  String migratoryStatus = '';
 }
 
-class _PersonalInformationFormState extends State<PersonalInformationForm> {
+class PersonalInformationForm extends StatefulWidget {
+  @override
+  PersonalInformationFormState createState() => PersonalInformationFormState();
+}
+
+class PersonalInformationFormState extends State<PersonalInformationForm> {
+  PersonalInformation personalInfo = PersonalInformation();
+  // Variables to store the data collected from the form fields
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController givenNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -15,8 +38,6 @@ class _PersonalInformationFormState extends State<PersonalInformationForm> {
   final TextEditingController yearController = TextEditingController();
   bool isMale = false;
   bool isFemale = false;
-  String maritalStatus = '';
-  String educationLevel = '';
   bool isEmployed = false;
   bool isUnemployed = false;
   bool isSelfEmployed = false;
@@ -149,30 +170,33 @@ class _PersonalInformationFormState extends State<PersonalInformationForm> {
             Row(
               children: [
                 Checkbox(
-                  value: maritalStatus == 'Married',
+                  value: personalInfo.maritalStatus == 'Married',
                   onChanged: (newValue) {
                     setState(() {
-                      maritalStatus = newValue == true ? 'Married' : '';
+                      personalInfo.maritalStatus =
+                          newValue == true ? 'Married' : '';
                     });
                   },
                 ),
                 Text('Married'),
                 SizedBox(width: 16.0),
                 Checkbox(
-                  value: maritalStatus == 'Single',
+                  value: personalInfo.maritalStatus == 'Single',
                   onChanged: (newValue) {
                     setState(() {
-                      maritalStatus = newValue == true ? 'Single' : '';
+                      personalInfo.maritalStatus =
+                          newValue == true ? 'Single' : '';
                     });
                   },
                 ),
                 Text('Single'),
                 SizedBox(width: 16.0),
                 Checkbox(
-                  value: maritalStatus == 'Cohabiting',
+                  value: personalInfo.maritalStatus == 'Cohabiting',
                   onChanged: (newValue) {
                     setState(() {
-                      maritalStatus = newValue == true ? 'Cohabiting' : '';
+                      personalInfo.maritalStatus =
+                          newValue == true ? 'Cohabiting' : '';
                     });
                   },
                 ),
@@ -187,50 +211,50 @@ class _PersonalInformationFormState extends State<PersonalInformationForm> {
                 RadioListTile(
                   title: Text('Not Educated'),
                   value: 'Not Educated',
-                  groupValue: educationLevel,
+                  groupValue: personalInfo.educationLevel,
                   onChanged: (newValue) {
                     setState(() {
-                      educationLevel = newValue.toString();
+                      personalInfo.educationLevel = newValue.toString();
                     });
                   },
                 ),
                 RadioListTile(
                   title: Text('Primary Level'),
                   value: 'Primary Level',
-                  groupValue: educationLevel,
+                  groupValue: personalInfo.educationLevel,
                   onChanged: (newValue) {
                     setState(() {
-                      educationLevel = newValue.toString();
+                      personalInfo.educationLevel = newValue.toString();
                     });
                   },
                 ),
                 RadioListTile(
                   title: Text('Secondary Level'),
                   value: 'Secondary Level',
-                  groupValue: educationLevel,
+                  groupValue: personalInfo.educationLevel,
                   onChanged: (newValue) {
                     setState(() {
-                      educationLevel = newValue.toString();
+                      personalInfo.educationLevel = newValue.toString();
                     });
                   },
                 ),
                 RadioListTile(
                   title: Text('University'),
                   value: 'University',
-                  groupValue: educationLevel,
+                  groupValue: personalInfo.educationLevel,
                   onChanged: (newValue) {
                     setState(() {
-                      educationLevel = newValue.toString();
+                      personalInfo.educationLevel = newValue.toString();
                     });
                   },
                 ),
                 RadioListTile(
                   title: Text('Vocational'),
                   value: 'Vocational',
-                  groupValue: educationLevel,
+                  groupValue: personalInfo.educationLevel,
                   onChanged: (newValue) {
                     setState(() {
-                      educationLevel = newValue.toString();
+                      personalInfo.educationLevel = newValue.toString();
                     });
                   },
                 ),
@@ -375,8 +399,40 @@ class _PersonalInformationFormState extends State<PersonalInformationForm> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Save button returns to the previous page and sends the name back
-                    Navigator.pop(context, firstNameController.text);
+                    // Save button returns to the previous page and sends the data back
+                    setState(() {
+                      personalInfo.firstName = firstNameController.text;
+                      personalInfo.givenName = givenNameController.text;
+                      personalInfo.lastName = lastNameController.text;
+                      personalInfo.day = int.tryParse(dayController.text) ?? 0;
+                      personalInfo.month =
+                          int.tryParse(monthController.text) ?? 0;
+                      personalInfo.year =
+                          int.tryParse(yearController.text) ?? 0;
+                      personalInfo.gender = isMale ? 'Male' : 'Female';
+                      personalInfo.employmentStatus = isEmployed
+                          ? 'Employed'
+                          : (isUnemployed ? 'Unemployed' : 'Self-Employed');
+                      personalInfo.citizenship =
+                          isCitizen ? 'Citizen' : 'Non Citizen';
+                      personalInfo.ethnicity = ethnicityController.text;
+                      personalInfo.languageSpoken =
+                          languageSpokenController.text;
+                      personalInfo.religion = religionController.text;
+                      if (isEmployed || isSelfEmployed) {
+                        personalInfo.occupation = occupationController.text;
+                      }
+                      if (isCitizen) {
+                        personalInfo.ninNumber = ninController.text;
+                      } else {
+                        personalInfo.countryOfOrigin = countryController.text;
+                      }
+                      if (!isCitizen) {
+                        personalInfo.migratoryStatus =
+                            migratoryStatusController.text;
+                      }
+                    });
+                    Navigator.pop(context, personalInfo);
                   },
                   child: Text('Save'),
                 ),

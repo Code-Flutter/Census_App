@@ -5,10 +5,9 @@ import 'package:census_app/home.dart';
 import 'package:census_app/play.dart';
 import 'package:census_app/profile.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/src/widgets/page_view.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -53,19 +52,19 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
         color: Colors.blueAccent,
-        items: const <Widget>[
-          Icon(Icons.home, size: 30),
-          Icon(Icons.play_circle, size: 30),
-          Icon(Icons.add, size: 30),
-          Icon(Icons.money, size: 30),
-          Icon(Icons.person, size: 30),
+        items: <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.list, size: 30, color: Colors.white),
+          Icon(Icons.add, size: 30, color: Colors.white),
+          Icon(Icons.money, size: 30, color: Colors.white),
+          Icon(Icons.person, size: 30, color: Colors.white),
         ],
         onTap: (index) {
           setState(() {
             _currentIndex = index;
             _pageController.animateToPage(
               index,
-              duration: const Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 200),
               curve: Curves.easeInOut,
             );
           });

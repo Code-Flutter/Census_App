@@ -1,18 +1,24 @@
+import 'package:census_app/database/database.dart';
+import 'package:census_app/navrbarpage.dart';
 import 'package:flutter/material.dart';
 import 'personal_information_form.dart';
+import 'census_add.dart';
 
 class MembersPage extends StatefulWidget {
-  const MembersPage({super.key});
+  const MembersPage({super.key, this.houseHoldData, this.personalInformation});
+  final HouseHoldData? houseHoldData;
+  final PersonalInformation? personalInformation;
 
   // final int numberOfPeople;
   // MembersPage({required this.numberOfPeople});
 
   @override
-  _MembersPageState createState() => _MembersPageState();
+  MembersPageState createState() => MembersPageState();
 }
 
-class _MembersPageState extends State<MembersPage> {
-  List<String> registeredPeople = [];
+class MembersPageState extends State<MembersPage> {
+  DatabaseService newRecord = DatabaseService();
+  List<PersonalInformation> registeredPeople = [];
 
   // Household information and other details
   String nameOfHeadOfHousehold = '';
@@ -66,12 +72,12 @@ class _MembersPageState extends State<MembersPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  PersonalInformationForm(),
+                    builder: (context) => PersonalInformationForm(),
                   ),
                 ).then((newPerson) {
                   // After returning from the PersonalInformationForm page,
                   // add the new person to the list of registered people
-                  if (newPerson != null && newPerson.isNotEmpty) {
+                  if (newPerson != null) {
                     setState(() {
                       registeredPeople.add(newPerson);
                     });
@@ -94,7 +100,7 @@ class _MembersPageState extends State<MembersPage> {
             );
           } else {
             // Show the grid for the registered people
-            final personName = registeredPeople[index - 1];
+            PersonalInformation personName = registeredPeople[index - 1];
             return Container(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -102,7 +108,7 @@ class _MembersPageState extends State<MembersPage> {
               ),
               child: Center(
                 child: Text(
-                  personName,
+                  personName.firstName,
                   style: const TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
               ),
@@ -111,7 +117,43 @@ class _MembersPageState extends State<MembersPage> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _saveDetails,
+        // onPressed: _saveDetails,
+        onPressed: () async {
+          await newRecord.updateHouseholdData(
+              widget.houseHoldData?.headOfHousehold,
+              widget.houseHoldData?.typeOfDwelling,
+              widget.houseHoldData?.numberOfPeople,
+              widget.houseHoldData?.selectedDistrict,
+              widget.houseHoldData?.selectedCounty,
+              widget.houseHoldData?.selectedSubcounty,
+              widget.houseHoldData?.selectedParish,
+              widget.houseHoldData?.selectedVillage);
+
+          for (int i = 0; i < registeredPeople.length; i++) {
+            await newRecord.updateInhabitantData(
+                registeredPeople[i].firstName,
+                registeredPeople[i].givenName,
+                registeredPeople[i].lastName,
+                registeredPeople[i].day,
+                registeredPeople[i].month,
+                registeredPeople[i].year,
+                registeredPeople[i].gender,
+                registeredPeople[i].maritalStatus,
+                registeredPeople[i].educationLevel,
+                registeredPeople[i].employmentStatus,
+                registeredPeople[i].occupation,
+                registeredPeople[i].citizenship,
+                registeredPeople[i].ninNumber,
+                registeredPeople[i].countryOfOrigin,
+                registeredPeople[i].ethnicity,
+                registeredPeople[i].languageSpoken,
+                registeredPeople[i].religion,
+                registeredPeople[i].migratoryStatus);
+          }
+          ;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        },
         label: const Text('Save Details'),
         icon: const Icon(Icons.save),
       ),

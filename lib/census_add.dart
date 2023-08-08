@@ -1,55 +1,62 @@
-import 'package:census_app/auth.dart';
-import 'package:flutter/material.dart';
 import 'package:census_app/members.dart';
-import 'database/database.dart';
+import 'package:flutter/material.dart';
+import 'package:census_app/database/database.dart';
+import 'auth.dart';
 
-class Census_count extends StatefulWidget {
-  @override
-  _Census_countState createState() => _Census_countState();
-}
+class HouseHoldData {
+  String? headOfHousehold = '';
+  String? typeOfDwelling = '';
+  int? numberOfPeople = 0;
 
-class _Census_countState extends State<Census_count> {
-  String? userUID = AuthService().getUserUID();
-
-  bool isRented = false;
-  bool hasElectricity = false;
-  bool hasWater = false;
-  bool hasHealthCare = false;
-  String typeOfOwnership = '';
-
+  // District, County, Subcounty, Parish, and Village Variables
   String? selectedDistrict;
   String? selectedCounty;
   String? selectedSubcounty;
   String? selectedParish;
   String? selectedVillage;
+}
 
+class Census_count extends StatefulWidget {
+  @override
+  Census_countState createState() => Census_countState();
+}
+
+class Census_countState extends State<Census_count> {
+  // DatabaseService newHousehold = DatabaseService();
+  // Household Information Variables
+  DatabaseService newRecord = DatabaseService();
+  AuthService uid = AuthService();
+
+  HouseHoldData householdData = HouseHoldData();
+
+  // Dropdown Button onChanged Functions
   void onDistrictChanged(String? newValue) {
     setState(() {
-      selectedDistrict = newValue;
+      householdData.selectedDistrict = newValue;
     });
   }
 
   void onCountyChanged(String? newValue) {
     setState(() {
-      selectedCounty = newValue;
+      householdData.selectedCounty = newValue;
     });
   }
 
   void onSubcountyChanged(String? newValue) {
     setState(() {
-      selectedSubcounty = newValue;
+      householdData.selectedSubcounty = newValue;
     });
   }
 
   void onParishChanged(String? newValue) {
     setState(() {
-      selectedParish = newValue;
+      householdData.selectedParish = newValue;
     });
   }
 
   void onVillageChanged(String? newValue) {
     setState(() {
-      selectedVillage = newValue;
+      householdData.selectedVillage = newValue;
     });
   }
 
@@ -71,17 +78,30 @@ class _Census_countState extends State<Census_count> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   SizedBox(height: 8.0),
                   TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'Name of the head of the household')),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                      decoration: InputDecoration(
-                          labelText:
-                              'Type of dwelling (Bungalow, Apartment, etc.)')),
-                  SizedBox(height: 16.0),
-                  TextFormField(
+                    onChanged: (value) {
+                      householdData.headOfHousehold = value;
+                    },
                     decoration: InputDecoration(
-                        labelText: 'Number of people living in the household'),
+                      labelText: 'Name of the head of the household',
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    onChanged: (value) {
+                      householdData.typeOfDwelling = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Type of dwelling (Bungalow, Apartment, etc.)',
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    onChanged: (value) {
+                      householdData.numberOfPeople = int.tryParse(value) ?? 0;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Number of people living in the household',
+                    ),
                     keyboardType: TextInputType.number,
                   ),
                   SizedBox(height: 16.0),
@@ -94,7 +114,7 @@ class _Census_countState extends State<Census_count> {
                             children: [
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  value: selectedDistrict,
+                                  value: householdData.selectedDistrict,
                                   onChanged: onDistrictChanged,
                                   items:
                                       ['District A', 'District B', 'District C']
@@ -111,7 +131,7 @@ class _Census_countState extends State<Census_count> {
                               SizedBox(width: 16.0),
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  value: selectedCounty,
+                                  value: householdData.selectedCounty,
                                   onChanged: onCountyChanged,
                                   items: ['County A', 'County B', 'County C']
                                       .map((county) => DropdownMenuItem(
@@ -131,7 +151,7 @@ class _Census_countState extends State<Census_count> {
                             children: [
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  value: selectedSubcounty,
+                                  value: householdData.selectedSubcounty,
                                   onChanged: onSubcountyChanged,
                                   items: [
                                     'Subcounty A',
@@ -151,7 +171,7 @@ class _Census_countState extends State<Census_count> {
                               SizedBox(width: 16.0),
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  value: selectedParish,
+                                  value: householdData.selectedParish,
                                   onChanged: onParishChanged,
                                   items: ['Parish A', 'Parish B', 'Parish C']
                                       .map((parish) => DropdownMenuItem(
@@ -168,7 +188,7 @@ class _Census_countState extends State<Census_count> {
                           ),
                           SizedBox(height: 16.0),
                           DropdownButtonFormField<String>(
-                            value: selectedVillage,
+                            value: householdData.selectedVillage,
                             onChanged: onVillageChanged,
                             items: ['Village A', 'Village B', 'Village C']
                                 .map((village) => DropdownMenuItem(
@@ -192,20 +212,13 @@ class _Census_countState extends State<Census_count> {
             width: double.infinity,
             height: 40.0,
             child: ElevatedButton(
-              onPressed: () async {
-                await DatabaseService(uid: userUID).updateHouseholdData(
-                    'Trevor',
-                    'flat',
-                    5,
-                    'Wakiso',
-                    'Busiro',
-                    'Naguru',
-                    'Bukoto',
-                    'home');
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MembersPage(),
+                    builder: (context) => MembersPage(
+                      houseHoldData: householdData,
+                    ),
                   ),
                 );
               },
