@@ -1,4 +1,4 @@
-import 'package:census_app/main.dart';
+import 'package:Census/main.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {

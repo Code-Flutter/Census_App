@@ -1,4 +1,4 @@
-import 'package:census_app/database/database.dart';
+import 'package:Census/database/database.dart';
 import 'package:flutter/material.dart';
 
 class Play extends StatelessWidget {

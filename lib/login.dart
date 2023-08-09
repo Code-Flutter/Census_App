@@ -1,5 +1,5 @@
-import 'package:census_app/auth.dart';
-import 'package:census_app/navrbarpage.dart';
+import 'package:Census/auth.dart';
+import 'package:Census/navrbarpage.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {

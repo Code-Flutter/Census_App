@@ -1,5 +1,5 @@
-import 'package:census_app/database/database.dart';
-import 'package:census_app/navrbarpage.dart';
+import 'package:Census/database/database.dart';
+import 'package:Census/navrbarpage.dart';
 import 'package:flutter/material.dart';
 import 'personal_information_form.dart';
 import 'census_add.dart';

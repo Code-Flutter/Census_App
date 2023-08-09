@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:census_app/Transactions.dart';
-import 'package:census_app/census_add.dart';
-import 'package:census_app/home.dart';
-import 'package:census_app/play.dart';
-import 'package:census_app/profile.dart';
+import 'package:Census/Transactions.dart';
+import 'package:Census/census_add.dart';
+import 'package:Census/home.dart';
+import 'package:Census/play.dart';
+import 'package:Census/profile.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/src/widgets/page_view.dart';
 
