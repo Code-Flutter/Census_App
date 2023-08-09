@@ -1,3 +1,4 @@
+import 'package:census_app/database/database.dart';
 import 'package:flutter/material.dart';
 
 class Play extends StatelessWidget {
@@ -5,12 +6,22 @@ class Play extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DatabaseService householdData = DatabaseService();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Play'),
       ),
-      body: const Center(
-        child: Text('Welcome to the Play Screen!'),
+      body: Center(
+        child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () async {
+                  await householdData.fetchData();
+                },
+                child: Text('Get Data')),
+            Text('Welcome to the Play Screen!'),
+          ],
+        ),
       ),
     );
   }

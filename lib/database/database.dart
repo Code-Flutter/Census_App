@@ -12,6 +12,40 @@ class DatabaseService {
   final CollectionReference inhabitantsCollection =
       FirebaseFirestore.instance.collection('Inhabitants');
 
+  Future<List<Map<String, dynamic>>> fetchData() async {
+    List<Map<String, dynamic>> dataList = [];
+    AuthService userUid = AuthService();
+
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Households')
+          .where('Collector ID', isEqualTo: await userUid.getUserUID())
+          .get();
+
+      snapshot.docs.forEach((doc) {
+        String householdId = doc['HouseHold ID'];
+        String headOfHousehold = doc['Head of the HouseHold'];
+        String village = doc['Village']; // Accessing the "County" field
+        // Other fields can be accessed similarly
+
+        // Create a map for the current document's data
+        Map<String, dynamic> documentData = {
+          'HouseHold ID': householdId,
+          'Head of HouseHold': headOfHousehold,
+          'Village': village,
+          // Include other fields as needed
+        };
+
+        dataList.add(documentData);
+      });
+      print(dataList);
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+
+    return dataList;
+  }
+
   Future updateHouseholdData(
     String? nameOfHouseholdHead,
     String? typeOfDwelling,
