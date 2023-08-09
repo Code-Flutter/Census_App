@@ -38,7 +38,6 @@ class DatabaseService {
 
         dataList.add(documentData);
       });
-      print(dataList);
     } catch (e) {
       print('Error fetching data: $e');
     }
