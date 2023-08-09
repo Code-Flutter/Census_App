@@ -29,28 +29,37 @@ class Census_countState extends State<Census_count> {
 
   HouseHoldData householdData = HouseHoldData();
 
-  // Dropdown Button onChanged Functions
   void onDistrictChanged(String? newValue) {
     setState(() {
       householdData.selectedDistrict = newValue;
+      householdData.selectedCounty = null; // Reset selected county
+      householdData.selectedSubcounty = null; // Reset selected subcounty
+      householdData.selectedParish = null; // Reset selected parish
+      householdData.selectedVillage = null; // Reset selected village
     });
   }
 
   void onCountyChanged(String? newValue) {
     setState(() {
       householdData.selectedCounty = newValue;
+      householdData.selectedSubcounty = null; // Reset selected subcounty
+      householdData.selectedParish = null; // Reset selected parish
+      householdData.selectedVillage = null; // Reset selected village
     });
   }
 
   void onSubcountyChanged(String? newValue) {
     setState(() {
       householdData.selectedSubcounty = newValue;
+      householdData.selectedParish = null; // Reset selected parish
+      householdData.selectedVillage = null; // Reset selected village
     });
   }
 
   void onParishChanged(String? newValue) {
     setState(() {
       householdData.selectedParish = newValue;
+      householdData.selectedVillage = null; // Reset selected village
     });
   }
 
@@ -58,6 +67,472 @@ class Census_countState extends State<Census_count> {
     setState(() {
       householdData.selectedVillage = newValue;
     });
+  }
+
+  List<DropdownMenuItem<String>> _getCountyItems(String? selectedDistrict) {
+    List<String> counties = [];
+
+    // Populate counties based on selected district
+    if (selectedDistrict == 'Kampala') {
+      counties = [
+        'Kawempe Division',
+        'Central Division',
+        'Nakawa Division',
+        'Makindye division',
+        'Rubaga division'
+      ];
+    } else if (selectedDistrict == 'Mbale') {
+      counties = ['Bufumbo', 'Bukonde', 'Bukyiende'];
+    } else if (selectedDistrict == 'Wakiso') {
+      counties = ['Gombe', 'Kakiri', 'Kasanje'];
+    }
+
+    // ... Add more conditions for other districts
+
+    return counties.map((county) {
+      return DropdownMenuItem(
+        value: county,
+        child: Text(county),
+      );
+    }).toList();
+  }
+
+  List<DropdownMenuItem<String>> _getSubcountyItems(String? selectedCounty) {
+    List<String> subcounties = [];
+
+    // Populate subcounties based on selected county
+    if (selectedCounty == 'Central Division') {
+      subcounties = ['Central'];
+    } else if (selectedCounty == 'Kawempe Division') {
+      subcounties = ['Kawempe'];
+    } else if (selectedCounty == 'Nakawa Division') {
+      subcounties = ['Nakawa'];
+    } else if (selectedCounty == 'Makindye Division') {
+      subcounties = ['Makindye'];
+    } else if (selectedCounty == 'Rubaga Division') {
+      subcounties = ['Rubaga'];
+    } else if (selectedCounty == 'Bufumbo') {
+      subcounties = ['Bufumbo'];
+    } else if (selectedCounty == 'Bukonde') {
+      subcounties = ['Bukonde'];
+    } else if (selectedCounty == 'Bukyiende') {
+      subcounties = ['Gombe'];
+    } else if (selectedCounty == 'Kakiri') {
+      subcounties = ['Kakiri'];
+    } else if (selectedCounty == 'Kasanje') {
+      subcounties = ['Kasanje'];
+    } else if (selectedCounty == 'Gombe') {
+      subcounties = ['Gombe'];
+    }
+    // ... Add more conditions for other counties
+
+    return subcounties.map((subcounty) {
+      return DropdownMenuItem(
+        value: subcounty,
+        child: Text(subcounty),
+      );
+    }).toList();
+  }
+
+  List<DropdownMenuItem<String>> _getParishItems(String? selectedSubcounty) {
+    List<String> parishes = [];
+
+    // Populate parishes based on selected subcounty
+    if (selectedSubcounty == 'Kawempe') {
+      parishes = ['Komamboga', 'Bwaise', 'Mulago'];
+    } else if (selectedSubcounty == 'Nakawa') {
+      parishes = ['Kyambogo', 'Luzira', 'Bugolobi'];
+    } else if (selectedSubcounty == 'Rubaga') {
+      parishes = ['Busega', ' Kabowa ', 'Kasubi'];
+    } else if (selectedSubcounty == 'Makindye') {
+      parishes = ['Buziga ', 'Ggaba', ' Kabalagala'];
+    } else if (selectedSubcounty == 'Central') {
+      parishes = ['Central'];
+    } else if (selectedSubcounty == 'Bufumbo') {
+      parishes = ['Bubyangu ', 'Bumadanda', ' Jewa'];
+    } else if (selectedSubcounty == 'Bukonde') {
+      parishes = ['Bulweta ', 'Bumuluya ', 'Lwasso'];
+    } else if (selectedSubcounty == 'Bukyiende') {
+      parishes = [
+        'Bumutsopa',
+        'Bunashimolo ',
+        'Burukuru',
+      ];
+    } else if (selectedSubcounty == 'Gombe ') {
+      parishes = ['Buwambo', ' Gombe', ' Kavule'];
+    } else if (selectedSubcounty == 'Kakiri') {
+      parishes = ['Buwanuka', 'Kakiri', 'Kamuli'];
+    } else if (selectedSubcounty == 'Kasanje') {
+      parishes = [
+        'Bulumbu',
+        'Bussi',
+        'Jjungo',
+      ];
+    }
+
+    // ... Add more conditions for other subcounties
+
+    return parishes.map((parish) {
+      return DropdownMenuItem(
+        value: parish,
+        child: Text(parish),
+      );
+    }).toList();
+  }
+
+  List<DropdownMenuItem<String>> _getVillageItems(String? selectedParish) {
+    List<String> villages = [];
+
+    // Populate villages based on selected parish
+    if (selectedParish == 'Bwaise') {
+      villages = [
+        'Bishop Mukwaya Zone I',
+        'Bishop Mukwaya Zone II',
+        'Bishop Mukwaya Zone III',
+        'Bubajwe Zone A',
+        'Bubajwe Zone B',
+        'Bwaise 1',
+        'Bwaise 2',
+        'Industrial Area A',
+        'Industrial Area B',
+      ];
+    } else if (selectedParish == 'Komamboga') {
+      villages = [
+        'Central Zone A',
+        'Central Zone B',
+        'Central Zone C',
+        'Kanyanya',
+        'Kanyanya-komamboga A',
+        'Kanyanya-komamboga B',
+      ];
+    } else if (selectedParish == 'Mulago') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Kyambogo') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Luzira') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bugolobi') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == ' Kabowa ') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Busega') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Kasubi') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == ' Kabalagala') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Buziga ') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Ggaba') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Central') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bubyangu ') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bumadanda') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == ' Jewa') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bulweta ') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bumuluya ') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Lwasso') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bumutsopa') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bunashimolo ') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Burukuru') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Buwambo') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == ' Gombe') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == ' Kavule') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Buwanuka') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Kakiri') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bulumbu') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Bussi') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Jjungo') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    } else if (selectedParish == 'Kamuli') {
+      villages = [
+        'Beckry Zone',
+        'Butaka Bukirwa A',
+        'Butaka Bukirwa B',
+        'Doctors Zone',
+        'Hospital Zone',
+        'Kaatale Zone',
+        'Kafeero Zone',
+        'Kibawo',
+      ];
+    }
+    // ... Add more conditions for other parishes
+
+    return villages.map((village) {
+      return DropdownMenuItem(
+        value: village,
+        child: Text(village),
+      );
+    }).toList();
   }
 
   @override
@@ -116,13 +591,16 @@ class Census_countState extends State<Census_count> {
                                 child: DropdownButtonFormField<String>(
                                   value: householdData.selectedDistrict,
                                   onChanged: onDistrictChanged,
-                                  items:
-                                      ['District A', 'District B', 'District C']
-                                          .map((district) => DropdownMenuItem(
-                                                value: district,
-                                                child: Text(district),
-                                              ))
-                                          .toList(),
+                                  items: [
+                                    'Kampala',
+                                    'Mbale',
+                                    'Wakiso',
+                                  ]
+                                      .map((district) => DropdownMenuItem(
+                                            value: district,
+                                            child: Text(district),
+                                          ))
+                                      .toList(),
                                   decoration: InputDecoration(
                                     labelText: 'District',
                                   ),
@@ -133,12 +611,8 @@ class Census_countState extends State<Census_count> {
                                 child: DropdownButtonFormField<String>(
                                   value: householdData.selectedCounty,
                                   onChanged: onCountyChanged,
-                                  items: ['County A', 'County B', 'County C']
-                                      .map((county) => DropdownMenuItem(
-                                            value: county,
-                                            child: Text(county),
-                                          ))
-                                      .toList(),
+                                  items: _getCountyItems(
+                                      householdData.selectedDistrict),
                                   decoration: InputDecoration(
                                     labelText: 'County',
                                   ),
@@ -153,16 +627,8 @@ class Census_countState extends State<Census_count> {
                                 child: DropdownButtonFormField<String>(
                                   value: householdData.selectedSubcounty,
                                   onChanged: onSubcountyChanged,
-                                  items: [
-                                    'Subcounty A',
-                                    'Subcounty B',
-                                    'Subcounty C'
-                                  ]
-                                      .map((subcounty) => DropdownMenuItem(
-                                            value: subcounty,
-                                            child: Text(subcounty),
-                                          ))
-                                      .toList(),
+                                  items: _getSubcountyItems(
+                                      householdData.selectedCounty),
                                   decoration: InputDecoration(
                                     labelText: 'Subcounty',
                                   ),
@@ -173,12 +639,8 @@ class Census_countState extends State<Census_count> {
                                 child: DropdownButtonFormField<String>(
                                   value: householdData.selectedParish,
                                   onChanged: onParishChanged,
-                                  items: ['Parish A', 'Parish B', 'Parish C']
-                                      .map((parish) => DropdownMenuItem(
-                                            value: parish,
-                                            child: Text(parish),
-                                          ))
-                                      .toList(),
+                                  items: _getParishItems(
+                                      householdData.selectedSubcounty),
                                   decoration: InputDecoration(
                                     labelText: 'Parish',
                                   ),
@@ -190,12 +652,8 @@ class Census_countState extends State<Census_count> {
                           DropdownButtonFormField<String>(
                             value: householdData.selectedVillage,
                             onChanged: onVillageChanged,
-                            items: ['Village A', 'Village B', 'Village C']
-                                .map((village) => DropdownMenuItem(
-                                      value: village,
-                                      child: Text(village),
-                                    ))
-                                .toList(),
+                            items:
+                                _getVillageItems(householdData.selectedParish),
                             decoration: InputDecoration(
                               labelText: 'Village',
                             ),
