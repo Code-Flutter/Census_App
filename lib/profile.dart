@@ -1,7 +1,7 @@
-import 'package:census_app/auth.dart';
-import 'package:census_app/home.dart';
-import 'package:census_app/login.dart';
-import 'package:census_app/play.dart';
+import 'package:Census/auth.dart';
+import 'package:Census/home.dart';
+import 'package:Census/login.dart';
+import 'package:Census/play.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {

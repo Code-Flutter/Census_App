@@ -1,6 +1,6 @@
-import 'package:census_app/members.dart';
+import 'package:Census/members.dart';
 import 'package:flutter/material.dart';
-import 'package:census_app/database/database.dart';
+import 'package:Census/database/database.dart';
 import 'auth.dart';
 
 class HouseHoldData {

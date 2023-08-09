@@ -1,4 +1,4 @@
-import 'package:census_app/auth.dart';
+import 'package:Census/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
