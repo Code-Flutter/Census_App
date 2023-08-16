@@ -12,6 +12,32 @@ class DatabaseService {
   final CollectionReference inhabitantsCollection =
       FirebaseFirestore.instance.collection('Inhabitants');
 
+  Future<int> numberOfHouseholds() async {
+    List<dynamic> householdList = [];
+    AuthService userUid = AuthService();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Households')
+        .where('Collector ID', isEqualTo: await userUid.getUserUID())
+        .get();
+    snapshot.docs.forEach((doc) {
+      householdList.add(doc);
+    });
+    return householdList.length;
+  }
+
+  Future<int> numberOfPeople() async {
+    List<dynamic> peopleList = [];
+    AuthService userUid = AuthService();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Inhabitants')
+        .where('Collector ID', isEqualTo: await userUid.getUserUID())
+        .get();
+    snapshot.docs.forEach((doc) {
+      peopleList.add(doc);
+    });
+    return peopleList.length;
+  }
+
   Future<List<Map<String, dynamic>>> fetchData() async {
     List<Map<String, dynamic>> dataList = [];
     AuthService userUid = AuthService();
