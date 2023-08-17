@@ -20,7 +20,19 @@ class _TransactionsState extends State<Transactions> {
           [households.numberOfHouseholds(), households.numberOfPeople()]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Transaction Details'),
+            ),
+            body: Center(
+              // Smaller CircularProgressIndicator
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
         } else if (snapshot.hasError) {
           return Scaffold(
             body: Center(
