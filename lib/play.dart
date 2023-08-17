@@ -38,74 +38,95 @@ class Play extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Card(
-                      color: Colors.amberAccent[100], // Off-white color
-                      elevation: 1, // No shadow
-                      margin: EdgeInsets.all(0), // No margin
+                      elevation: 4, // Adding a slight shadow for depth
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      color:Colors.blueAccent.withOpacity(0.9),
                       child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(20.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('HouseHold ID',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black)),
+                            Text(
+                              'Household ID',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 5),
                             Text(
                               '${record["HouseHold ID"]}',
                               style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey),
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white70,
+                              ),
                             ),
-                            SizedBox(height: 12),
-                            Text('HouseHold Head',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black)),
+                            SizedBox(height: 15),
+                            Text(
+                              'Household Head',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 5),
                             Text(
                               '${record["Head of HouseHold"]}',
                               style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey),
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white70,
+                              ),
                             ),
-                            SizedBox(height: 12),
-                            Text('Village',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black)),
+                            SizedBox(height: 15),
+                            Text(
+                              'Village',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 5),
                             Text(
                               '${record["Village"]}',
                               style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey),
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white70,
+                              ),
                             ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.edit,
-                                    size: 25.0,
-                                  ),
-                                ),
-                                SizedBox(width: 10.0),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    size: 25.0,
-                                  ),
-                                ),
-                                SizedBox(width: 10.0),
-                              ],
-                            )
+                            SizedBox(height: 20),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //     IconButton(
+                            //       onPressed: () {},
+                            //       icon: Icon(
+                            //         Icons.edit,
+                            //         size: 25.0,
+                            //         color: Colors.white,
+                            //       ),
+                            //     ),
+                            //     SizedBox(width: 10.0),
+                            //     IconButton(
+                            //       onPressed: () {},
+                            //       icon: Icon(
+                            //         Icons.delete,
+                            //         size: 25.0,
+                            //         color: Colors.white,
+                            //       ),
+                            //     ),
+                            //     SizedBox(width: 10.0),
+                            //   ],
+                            // )
                           ],
                         ),
                       ),
