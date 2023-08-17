@@ -16,6 +16,7 @@ class _LoginState extends State<Login> {
   String email = '';
   String password = '';
   String error = '';
+  bool isLoading = false; // Add a loading indicator variable
 
   @override
   Widget build(BuildContext context) {
@@ -75,29 +76,47 @@ class _LoginState extends State<Login> {
                   },
                 ),
                 SizedBox(height: 20.0),
-                Text(error),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red),
+                ),
                 ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState?.validate() == true) {
-                        dynamic result =
-                            await _auth.signInWithEmail(email, password);
-                        if (result == null) {
-                          setState(() {
-                            error = 'Wrong Credentials';
-                          });
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
-                        }
-                        ;
-                      } else {}
-                    },
-                    child: Text('Sign In'))
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          if (_formKey.currentState?.validate() == true) {
+                            setState(() {
+                              isLoading = true; // Activate loading indicator
+                            });
+
+                            dynamic result =
+                                await _auth.signInWithEmail(email, password);
+
+                            setState(() {
+                              isLoading = false; // Deactivate loading indicator
+                            });
+
+                            if (result == null) {
+                              setState(() {
+                                error = 'Wrong Credentials';
+                              });
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                  child: isLoading
+                      ? CircularProgressIndicator() // Show loader when isLoading is true
+                      : Text('Sign In'),
+                ),
               ],
             ),
           ),
