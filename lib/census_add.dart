@@ -26,7 +26,6 @@ class Census_countState extends State<Census_count> {
   // Household Information Variables
   DatabaseService newRecord = DatabaseService();
   AuthService uid = AuthService();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   HouseHoldData householdData = HouseHoldData();
 
@@ -540,189 +539,156 @@ class Census_countState extends State<Census_count> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Census Form')),
-      body: Form(
-        key: _formKey,
-        autovalidateMode: AutovalidateMode.always,
-        child: ListView(
-          padding: EdgeInsets.all(16.0),
-          children: [
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Household Information',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 8.0),
-                    TextFormField(
-                      onChanged: (value) {
-                        householdData.headOfHousehold = value;
-                      },
-                      decoration: InputDecoration(
-                        labelText:
-                            'Name of the head of the household(provide full name)',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Name of the household is required';
-                        }
-                        return null;
-                      },
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          Card(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Household Information',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    onChanged: (value) {
+                      householdData.headOfHousehold = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Name of the head of the household',
                     ),
-                    SizedBox(height: 16.0),
-                    TextFormField(
-                      onChanged: (value) {
-                        householdData.typeOfDwelling = value;
-                      },
-                      decoration: InputDecoration(
-                        labelText:
-                            'Type of dwelling (Bungalow, Apartment, etc.)',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Type of dwelling is required';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 16.0),
-                    TextFormField(
-                      onChanged: (value) {
-                        householdData.numberOfPeople = int.tryParse(value) ?? 0;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Number of people living in the household',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Number of peoiple is required';
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(height: 16.0),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: DropdownButtonFormField<String>(
-                                    value: householdData.selectedDistrict,
-                                    onChanged: onDistrictChanged,
-                                    items: [
-                                      'Kampala',
-                                      'Mbale',
-                                      'Wakiso',
-                                    ]
-                                        .map((district) => DropdownMenuItem(
-                                              value: district,
-                                              child: Text(district),
-                                            ))
-                                        .toList(),
-                                    decoration: InputDecoration(
-                                      labelText: 'District',
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0),
-                                Expanded(
-                                  child: DropdownButtonFormField<String>(
-                                    value: householdData.selectedCounty,
-                                    onChanged: onCountyChanged,
-                                    items: _getCountyItems(
-                                        householdData.selectedDistrict),
-                                    decoration: InputDecoration(
-                                      labelText: 'County',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: DropdownButtonFormField<String>(
-                                    value: householdData.selectedSubcounty,
-                                    onChanged: onSubcountyChanged,
-                                    items: _getSubcountyItems(
-                                        householdData.selectedCounty),
-                                    decoration: InputDecoration(
-                                      labelText: 'Subcounty',
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0),
-                                Expanded(
-                                  child: DropdownButtonFormField<String>(
-                                    value: householdData.selectedParish,
-                                    onChanged: onParishChanged,
-                                    items: _getParishItems(
-                                        householdData.selectedSubcounty),
-                                    decoration: InputDecoration(
-                                      labelText: 'Parish',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.0),
-                            DropdownButtonFormField<String>(
-                              value: householdData.selectedVillage,
-                              onChanged: onVillageChanged,
-                              items: _getVillageItems(
-                                  householdData.selectedParish),
-                              decoration: InputDecoration(
-                                labelText: 'Village',
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'District information is required';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 40.0,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() == true) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MembersPage(
-                          houseHoldData: householdData,
-                        ),
-                      ),
-                    );
-                  }
-                  ;
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                ),
-                child: Text('Register Members'),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    onChanged: (value) {
+                      householdData.typeOfDwelling = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Type of dwelling (Bungalow, Apartment, etc.)',
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    onChanged: (value) {
+                      householdData.numberOfPeople = int.tryParse(value) ?? 0;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Number of people living in the household',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 16.0),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: householdData.selectedDistrict,
+                                  onChanged: onDistrictChanged,
+                                  items: [
+                                    'Kampala',
+                                    'Mbale',
+                                    'Wakiso',
+                                  ]
+                                      .map((district) => DropdownMenuItem(
+                                            value: district,
+                                            child: Text(district),
+                                          ))
+                                      .toList(),
+                                  decoration: InputDecoration(
+                                    labelText: 'District',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16.0),
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: householdData.selectedCounty,
+                                  onChanged: onCountyChanged,
+                                  items: _getCountyItems(
+                                      householdData.selectedDistrict),
+                                  decoration: InputDecoration(
+                                    labelText: 'County',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16.0),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: householdData.selectedSubcounty,
+                                  onChanged: onSubcountyChanged,
+                                  items: _getSubcountyItems(
+                                      householdData.selectedCounty),
+                                  decoration: InputDecoration(
+                                    labelText: 'Subcounty',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16.0),
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: householdData.selectedParish,
+                                  onChanged: onParishChanged,
+                                  items: _getParishItems(
+                                      householdData.selectedSubcounty),
+                                  decoration: InputDecoration(
+                                    labelText: 'Parish',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16.0),
+                          DropdownButtonFormField<String>(
+                            value: householdData.selectedVillage,
+                            onChanged: onVillageChanged,
+                            items:
+                                _getVillageItems(householdData.selectedParish),
+                            decoration: InputDecoration(
+                              labelText: 'Village',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 40.0,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MembersPage(
+                      houseHoldData: householdData,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: Text('Register Members'),
+            ),
+          ),
+        ],
       ),
     );
   }
