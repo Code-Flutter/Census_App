@@ -1,6 +1,7 @@
 import 'package:Census/auth.dart';
 import 'package:Census/home.dart';
-import 'package:Census/login.dart';
+// import 'package:Census/login.dart';
+import 'package:Census/main.dart';
 import 'package:Census/play.dart';
 import 'package:flutter/material.dart';
 
@@ -90,9 +91,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   // Assuming _auth is an instance of your authentication class
                   await _auth.logOut();
                   print('Logged out Successfully');
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => Login()),
+                    MaterialPageRoute(
+                        builder: (context) => MyHomePage(title: 'CensusApp')),
+                    (route) => false,
                   );
                 },
                 child: Text('Sign Out'),

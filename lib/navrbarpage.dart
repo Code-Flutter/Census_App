@@ -31,9 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('My App'),
-      // ),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
