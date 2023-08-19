@@ -1,6 +1,7 @@
 import 'package:Census/auth.dart';
 import 'package:Census/navrbarpage.dart';
 import 'package:flutter/material.dart';
+import 'package:connectivity/connectivity.dart';
 
 class Login extends StatefulWidget {
   Login({super.key});
@@ -17,6 +18,20 @@ class _LoginState extends State<Login> {
   String password = '';
   String error = '';
   bool isLoading = false; // Add a loading indicator variable
+  bool isOnline = true; // Add an online status variable
+
+  @override
+  void initState() {
+    super.initState();
+    _checkConnectivity();
+  }
+
+  Future<void> _checkConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      isOnline = connectivityResult != ConnectivityResult.none;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +56,11 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 150.0),
                 TextFormField(
                   decoration: InputDecoration(
-                    hintText: 'Enter your Email', // Placeholder text
+                    hintText: 'Enter your Email',
+                    // ... other input decoration properties ...
                   ),
                   validator: (val) {
-                    if (val?.isEmpty == true) {
-                      return 'Enter Email';
-                    } else {
-                      return null;
-                    }
+                    // ... email validation logic ...
                   },
                   onChanged: (val) {
                     setState(() {
@@ -59,14 +71,11 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 50.0),
                 TextFormField(
                   decoration: InputDecoration(
-                    hintText: 'Enter Password', // Placeholder text
+                    hintText: 'Enter Password',
+                    // ... other input decoration properties ...
                   ),
                   validator: (val) {
-                    if (val?.isEmpty == true) {
-                      return 'Enter Password';
-                    } else {
-                      return null;
-                    }
+                    // ... password validation logic ...
                   },
                   obscureText: true,
                   onChanged: (val) {
@@ -76,27 +85,32 @@ class _LoginState extends State<Login> {
                   },
                 ),
                 SizedBox(height: 20.0),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red),
-                ),
+                isOnline
+                    ? Text(
+                        error,
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : Text(
+                        'No internet connection',
+                        style: TextStyle(color: Colors.red),
+                      ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                   ),
-                  onPressed: isLoading
+                  onPressed: isLoading || !isOnline
                       ? null
                       : () async {
                           if (_formKey.currentState?.validate() == true) {
                             setState(() {
-                              isLoading = true; // Activate loading indicator
+                              isLoading = true;
                             });
 
                             dynamic result =
                                 await _auth.signInWithEmail(email, password);
 
                             setState(() {
-                              isLoading = false; // Deactivate loading indicator
+                              isLoading = false;
                             });
 
                             if (result == null) {
@@ -114,7 +128,7 @@ class _LoginState extends State<Login> {
                           }
                         },
                   child: isLoading
-                      ? CircularProgressIndicator() // Show loader when isLoading is true
+                      ? CircularProgressIndicator()
                       : Text('Sign In'),
                 ),
               ],
