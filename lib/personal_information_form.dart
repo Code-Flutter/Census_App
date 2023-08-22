@@ -54,24 +54,6 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
   final TextEditingController migratoryStatusController =
       TextEditingController();
 
-  String calculateAge() {
-    final currentDate = DateTime.now();
-    final int birthYear = int.tryParse(yearController.text) ?? 0;
-    final int birthMonth = int.tryParse(monthController.text) ?? 1;
-    final int birthDay = int.tryParse(dayController.text) ?? 1;
-
-    final dob = DateTime(birthYear, birthMonth, birthDay);
-
-    int age = currentDate.year - dob.year;
-
-    if (currentDate.month < dob.month ||
-        (currentDate.month == dob.month && currentDate.day < dob.day)) {
-      age--;
-    }
-
-    return age.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +66,67 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 16.0),
+              Text('Citizenship'),
+              Row(
+                children: [
+                  Checkbox(
+                    value: isCitizen,
+                    onChanged: (newValue) {
+                      setState(() {
+                        isCitizen = newValue ?? false;
+                        isNonCitizen = !isCitizen;
+                        if (!isCitizen) {
+                          ninController.clear();
+                        }
+                      });
+                    },
+                  ),
+                  Text('Citizen'),
+                  SizedBox(width: 16.0),
+                  Checkbox(
+                    value: isNonCitizen,
+                    onChanged: (newValue) {
+                      setState(() {
+                        isNonCitizen = newValue ?? false;
+                        isCitizen = !isNonCitizen;
+                        if (!isNonCitizen) {
+                          countryController.clear();
+                        }
+                      });
+                    },
+                  ),
+                  Text('Non Citizen'),
+                ],
+              ),
+              if (isCitizen) ...[
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: ninController,
+                  decoration: InputDecoration(labelText: 'NIN Number'),
+                  maxLength: 14,
+                  validator: (value) {
+                    if (value?.isNotEmpty == true) {
+                      value =
+                          value!.toUpperCase(); // Convert value to uppercase
+
+                      // Check if NIN starts with "CM" or "CF" and has a total length of 14 characters
+                      if (!(value.startsWith('CM') || value.startsWith('CF')) ||
+                          value.length != 14) {
+                        return 'NIN Number must start with either CM or CF and be exactly 14 characters';
+                      }
+                    }
+                    return null; // Return null if validation passes
+                  },
+                ),
+              ],
+              if (isNonCitizen) ...[
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: countryController,
+                  decoration: InputDecoration(labelText: 'Country of Origin'),
+                ),
+              ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,12 +147,6 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                     child: TextFormField(
                       controller: givenNameController,
                       decoration: InputDecoration(labelText: 'Given Name'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Given Name is required';
-                        }
-                        return null;
-                      },
                     ),
                   ),
                   SizedBox(width: 16.0),
@@ -117,6 +154,12 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                     child: TextFormField(
                       controller: lastNameController,
                       decoration: InputDecoration(labelText: 'Last Name'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Given Name is required';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -130,6 +173,8 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                       controller: dayController,
                       decoration: InputDecoration(labelText: 'DD'),
                       maxLength: 2,
+                      keyboardType:
+                          TextInputType.number, // Set the keyboard type
                     ),
                   ),
                   SizedBox(width: 16.0),
@@ -138,6 +183,8 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                       controller: monthController,
                       decoration: InputDecoration(labelText: 'MM'),
                       maxLength: 2,
+                      keyboardType:
+                          TextInputType.number, // Set the keyboard type
                     ),
                   ),
                   SizedBox(width: 16.0),
@@ -146,17 +193,12 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                       controller: yearController,
                       decoration: InputDecoration(labelText: 'Year'),
                       maxLength: 4,
+                      keyboardType:
+                          TextInputType.number, // Set the keyboard type
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 16.0),
-              // TextFormField(
-              //   // controller: ageController,
-              //   decoration: InputDecoration(labelText: 'Age'),
-              //   readOnly: true,
-              //   initialValue: calculateAge(),
-              // ),
               SizedBox(height: 16.0),
               Text('Gender'),
               Row(
@@ -288,8 +330,10 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                     onChanged: (newValue) {
                       setState(() {
                         isEmployed = newValue ?? false;
-                        isUnemployed = !isEmployed;
-                        isSelfEmployed = !isEmployed;
+                        if (isEmployed) {
+                          isUnemployed = false;
+                          isSelfEmployed = false;
+                        }
                         if (!isEmployed) {
                           occupationController.clear();
                         }
@@ -303,8 +347,10 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                     onChanged: (newValue) {
                       setState(() {
                         isUnemployed = newValue ?? false;
-                        isEmployed = !isUnemployed;
-                        isSelfEmployed = !isUnemployed;
+                        if (isUnemployed) {
+                          isEmployed = false;
+                          isSelfEmployed = false;
+                        }
                         if (!isUnemployed) {
                           occupationController.clear();
                         }
@@ -318,8 +364,10 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                     onChanged: (newValue) {
                       setState(() {
                         isSelfEmployed = newValue ?? false;
-                        isEmployed = !isSelfEmployed;
-                        isUnemployed = !isSelfEmployed;
+                        if (isSelfEmployed) {
+                          isEmployed = false;
+                          isUnemployed = false;
+                        }
                         if (!isSelfEmployed) {
                           occupationController.clear();
                         }
@@ -329,69 +377,14 @@ class PersonalInformationFormState extends State<PersonalInformationForm> {
                   Text('Self'),
                 ],
               ),
-              if (isEmployed || isSelfEmployed) ...[
+              if ((isEmployed || isSelfEmployed) &&
+                  !(isEmployed && isSelfEmployed)) ...[
                 SizedBox(height: 16.0),
                 TextFormField(
                   controller: occupationController,
                   decoration: InputDecoration(labelText: 'Occupation'),
                 ),
               ],
-              SizedBox(height: 16.0),
-              Text('Citizenship'),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isCitizen,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isCitizen = newValue ?? false;
-                        isNonCitizen = !isCitizen;
-                        if (!isCitizen) {
-                          ninController.clear();
-                        }
-                      });
-                    },
-                  ),
-                  Text('Citizen'),
-                  SizedBox(width: 16.0),
-                  Checkbox(
-                    value: isNonCitizen,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isNonCitizen = newValue ?? false;
-                        isCitizen = !isNonCitizen;
-                        if (!isNonCitizen) {
-                          countryController.clear();
-                        }
-                      });
-                    },
-                  ),
-                  Text('Non Citizen'),
-                ],
-              ),
-              if (isCitizen) ...[
-                SizedBox(height: 16.0),
-                TextFormField(
-                  controller: ninController,
-                  decoration: InputDecoration(labelText: 'NIN Number'),
-                  maxLength: 14,
-                  validator: (value) {
-                    if (value?.isEmpty == true) {
-                      return 'NIN Number is required'; // Custom error message for required field
-                    } else if (value?.length != 14) {
-                      return 'NIN Number must be exactly 14 characters';
-                    }
-                    return null; // Return null if validation passes
-                  },
-                ),
-              ],
-              // if (isNonCitizen) ...[
-              //   SizedBox(height: 16.0),
-              //   TextFormField(
-              //     controller: countryController,
-              //     decoration: InputDecoration(labelText: 'Country of Origin'),
-              //   ),
-              // ],
               SizedBox(height: 16.0),
               TextFormField(
                 controller: ethnicityController,
