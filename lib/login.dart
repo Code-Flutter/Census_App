@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+  Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -17,8 +17,9 @@ class _LoginState extends State<Login> {
   String email = '';
   String password = '';
   String error = '';
-  bool isLoading = false; // Add a loading indicator variable
-  bool isOnline = true; // Add an online status variable
+  bool isLoading = false;
+  bool isOnline = true;
+  bool obscureText = true; // Add this variable for password visibility
 
   @override
   void initState() {
@@ -57,7 +58,6 @@ class _LoginState extends State<Login> {
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Enter your Email',
-                    // ... other input decoration properties ...
                   ),
                   validator: (val) {
                     // ... email validation logic ...
@@ -72,12 +72,21 @@ class _LoginState extends State<Login> {
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Enter Password',
-                    // ... other input decoration properties ...
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                      child: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
                   ),
                   validator: (val) {
                     // ... password validation logic ...
                   },
-                  obscureText: true,
+                  obscureText: obscureText,
                   onChanged: (val) {
                     setState(() {
                       password = val;
@@ -138,4 +147,8 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(home: Login()));
 }
